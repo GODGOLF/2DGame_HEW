@@ -4,8 +4,7 @@
 #include "main.h"
 struct Rect {
 	D3DXVECTOR3	position;
-	D3DXVECTOR3 min;
-	D3DXVECTOR3 max;
+	D3DXVECTOR3 size;
 };
 struct Circle {
 	D3DXVECTOR3	position;

@@ -30,6 +30,7 @@
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"			// ウインドウのクラス名
 #define WINDOW_NAME		"カメラ処理"			// ウインドウのキャプション名
+#define FULLSCREEN      0
 
 //*****************************************************************************
 // 構造体定義
@@ -87,16 +88,37 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	// ウィンドウクラスの登録
 	RegisterClassEx(&wcex);
-
+	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+	int posX = 0;
+	int posY = 0;
+	if (FULLSCREEN) {
+		DEVMODE dmScreenSettings;
+		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+		dmScreenSettings.dmSize = sizeof(dmScreenSettings);
+		dmScreenSettings.dmPelsWidth = (unsigned long)screenWidth;
+		dmScreenSettings.dmPelsHeight = (unsigned long)screenHeight;
+		dmScreenSettings.dmBitsPerPel = 32;
+		dmScreenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
+	}
+	else {
+		
+		screenWidth = SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2;
+		screenHeight = SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION);
+		posX = CW_USEDEFAULT;
+		posY = CW_USEDEFAULT;
+		
+	}
 	// ウィンドウの作成
 	hWnd = CreateWindowEx(0,
 		CLASS_NAME,
 		WINDOW_NAME,
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
-		SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
+		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+		posX,
+		posY,
+		screenWidth,
+		screenHeight,
 		NULL,
 		NULL,
 		hInstance,

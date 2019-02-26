@@ -178,8 +178,17 @@ void getMouseFrameRate(int& mouseX, int& mouseY) {
 	mouseY = m_mouseState.lY;
 }
 void getMouseXY(D3DXVECTOR2 &vector) {
-	vector.x = (float)mouseX;
-	vector.y = (float)mouseY;
+	POINT p;
+	if (GetCursorPos(&p))
+	{
+		vector.x = (float)p.x;
+		vector.y = (float)p.y;
+	}
+	else {
+		vector.x = 0;
+		vector.y = 0;
+	}
+	
 }
 
 //=============================================================================

@@ -154,6 +154,9 @@ void UpdatePlayer(void)
 	// カメラの向き取得
 	rotCamera = GetRotCamera();
 
+	D3DXVECTOR2 mouse;
+	getMouseXY(mouse);
+	OutputDebugString(("X: "+ std::to_string(mouse.x)+" "+ "Y: " + std::to_string(mouse.y)+"\n").c_str());
 	if (GetKeyboardPress(DIK_A))
 	{
 		if (GetKeyboardPress(DIK_W))
